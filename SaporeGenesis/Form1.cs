@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+
 
 namespace SaporeGenesis
 {
@@ -103,31 +105,22 @@ namespace SaporeGenesis
 
         private void btnEnviar_Click_1(object sender, EventArgs e)
         {
+            // Verifica Existencia Dos Diretorios De Origem e Os Cria Caso Não Exista 
 
-            var root = @"C:\temp";
-            var subdir = @"c:\temp\Genesis";
-            var dll = @"c:\temp\Genesis\DLL";
-            var qr2 = @"c:\temp\Genesis\QR2";
-            var bpl = @"c:\temp\Genesis\BPL";
-            var zip = @"c:\temp\Genesis\ZIP";
-            var import = @"c:\temp\Genesis\Importados";
-
-            if (!Directory.Exists(root))
+            if (!Directory.Exists(ConfigurationManager.AppSettings["root"].ToString()))
             {
-                Directory.CreateDirectory(root);
-                Directory.CreateDirectory(subdir);
-                Directory.CreateDirectory(dll);
-                Directory.CreateDirectory(qr2);
-                Directory.CreateDirectory(bpl);
-                Directory.CreateDirectory(zip);
-                Directory.CreateDirectory(import);
-                System.Diagnostics.Process.Start(@"c:\temp\Genesis");
-
-
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["root"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["subdir"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["dll"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["qr2"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["bpl"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["zip"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["dirImport"].ToString());
+                System.Diagnostics.Process.Start(ConfigurationManager.AppSettings["subdir"].ToString());
             }
             else
             {
-                System.Diagnostics.Process.Start(@"c:\temp\Genesis");
+                System.Diagnostics.Process.Start(ConfigurationManager.AppSettings["subdir"].ToString());
             }
         }
 
@@ -136,60 +129,45 @@ namespace SaporeGenesis
 
         }
 
+
         private void btnEnviar_Click(object sender, EventArgs e)
         {
             // TKNS - 07
-
             if (tkns07.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -197,7 +175,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -211,8 +188,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -236,7 +211,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -246,7 +220,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -260,8 +233,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -271,7 +242,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -289,59 +259,171 @@ namespace SaporeGenesis
             }
 
 
+            // TKNS - 08
+            if (tkns08.Checked == true)
+            {
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin08 = ConfigurationManager.AppSettings["dirDllDestin08"].ToString();
+                var dirBplDestin08 = ConfigurationManager.AppSettings["dirBplDestin08"].ToString();
+                var dirQr2Destin08 = ConfigurationManager.AppSettings["dirQr2Destin08"].ToString();
+                var dirZipDestin08 = ConfigurationManager.AppSettings["dirZipDestin08"].ToString();
+                //Backup
+                var dirImport08 = ConfigurationManager.AppSettings["dirImport08"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
+                //  DLL                       
+                if (System.IO.File.Exists(dirFileDll))
+                {
+                    File.Copy(Path.Combine(dirDllDestin08, arqDll), Path.Combine(dirDllDestin08, arqDll + @".old"), true);
+                    File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin08, arqDll), true);
+                    File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport08, arqDll), true);
+                    System.IO.File.Delete(dirFileDll);
+                }
+                else
+                {
+                    if (!System.IO.File.Exists(dirDllOrigin))
+                    {
+                        MessageBox.Show("Não Existe Arquivo DLL na pasta de DLL´s", "Aviso");
+                    }
+                    else
+                    {
+                        File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin08, arqDll), true);
+                        File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport08, arqDll), true);
+                        System.IO.File.Delete(dirDllOrigin);
+                    }
+                }
+                // BPL 
+
+                if (System.IO.File.Exists(dirFileBpl))
+                {
+                    File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirBplDestin08, arqBpl + @".old"), true);
+                    File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirBplDestin08, arqBpl), true);
+                    File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirImport08, arqBpl), true);
+                    System.IO.File.Delete(dirFileBpl);
+                }
+
+                else
+                {
+                    if (!System.IO.File.Exists(dirBplOrigin))
+                    {
+                        MessageBox.Show("Não Existe Arquivo BPL na pasta de BPL´s", "Aviso");
+                    }
+                    else
+                    {
+                        File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirBplDestin08, arqBpl), true);
+                        File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirImport08, arqBpl), true);
+                        System.IO.File.Delete(dirBplOrigin);
+                    }
+                }
+                // QR2
+
+                if (System.IO.File.Exists(dirFileQr2))
+                {
+                    File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirQr2Destin08, arqQr2 + @".old"), true);
+                    File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirQr2Destin08, arqQr2), true);
+                    File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport08, arqQr2), true);
+                    System.IO.File.Delete(dirFileQr2);
+                }
+                else
+                {
+                    if (!System.IO.File.Exists(dirQr2Origin))
+                    {
+                        MessageBox.Show("Não Existe Arquivo QR2 na pasta de QR2´s", "Aviso");
+                    }
+                    else
+                    {
+                        File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirQr2Destin08, arqQr2), true);
+                        File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport08, arqQr2), true);
+                        System.IO.File.Delete(dirQr2Origin);
+                    }
+                }
+                // ZIP 
+
+                if (System.IO.File.Exists(dirFileZip))
+                {
+                    File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirZipDestin08, arqZip + @".old"), true);
+                    File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirZipDestin08, arqZip), true);
+                    File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport08, arqZip), true);
+                    System.IO.File.Delete(dirFileZip);
+                }
+                else
+                {
+                    if (!System.IO.File.Exists(dirZipOrigin))
+                    {
+                        MessageBox.Show("Não Existe Arquivo ZIP na pasta de ZIP´s", "Aviso");
+                    }
+                    else
+                    {
+                        File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirZipDestin08, arqZip), true);
+                        File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport08, arqZip), true);
+                        System.IO.File.Delete(dirZipOrigin);
+                    }
+                }
+
+            }
+
+
+            /*
 
             // TKNS - 09
-
             if (tkns09.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -349,7 +431,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -363,8 +444,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -388,7 +467,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -398,7 +476,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -412,8 +489,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -423,7 +498,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -439,61 +513,44 @@ namespace SaporeGenesis
                 }
 
             }
-
 
 
             // TKNS - 10
-
             if (tkns10.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -501,7 +558,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -515,8 +571,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -540,7 +594,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -550,7 +603,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -564,8 +616,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -575,7 +625,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -591,60 +640,43 @@ namespace SaporeGenesis
                 }
 
             }
-
 
             // TKNS - 11
-
             if (tkns11.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -652,7 +684,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -666,8 +697,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -691,7 +720,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -701,7 +729,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -715,8 +742,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -726,7 +751,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -742,60 +766,43 @@ namespace SaporeGenesis
                 }
 
             }
-
 
             // TKNS - 12
-
             if (tkns12.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -803,7 +810,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -817,8 +823,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -842,7 +846,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -852,7 +855,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -866,8 +868,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -877,7 +877,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -894,59 +893,42 @@ namespace SaporeGenesis
 
             }
 
-
             // TKNS - 13
-
             if (tkns13.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -954,7 +936,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -968,8 +949,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -993,7 +972,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -1003,7 +981,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -1017,8 +994,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -1028,7 +1003,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -1047,57 +1021,41 @@ namespace SaporeGenesis
 
 
             // TKNS - 14
-
             if (tkns14.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -1105,7 +1063,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -1119,8 +1076,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -1144,7 +1099,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -1154,7 +1108,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -1168,8 +1121,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -1179,7 +1130,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -1196,59 +1146,42 @@ namespace SaporeGenesis
 
             }
 
-
             // TKNS - 15
-
             if (tkns15.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -1256,7 +1189,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -1270,8 +1202,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -1295,7 +1225,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -1305,7 +1234,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -1319,8 +1247,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -1330,7 +1256,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -1348,57 +1273,41 @@ namespace SaporeGenesis
             }
 
             // TKNS - 16
-
             if (tkns16.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -1406,7 +1315,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -1420,8 +1328,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -1445,7 +1351,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -1455,7 +1360,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -1469,8 +1373,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -1480,7 +1382,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -1496,59 +1397,44 @@ namespace SaporeGenesis
                 }
 
             }
+
 
             // TKNS - 17
-
             if (tkns17.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -1556,7 +1442,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -1570,8 +1455,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -1595,7 +1478,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -1605,7 +1487,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -1619,8 +1500,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -1630,7 +1509,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -1646,60 +1524,43 @@ namespace SaporeGenesis
                 }
 
             }
-
 
             // TKNS - 18
-
             if (tkns18.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -1707,7 +1568,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -1721,8 +1581,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -1746,7 +1604,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -1756,7 +1613,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -1770,8 +1626,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -1781,7 +1635,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -1797,60 +1650,43 @@ namespace SaporeGenesis
                 }
 
             }
-
 
             // TKNS - 19
-
             if (tkns19.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -1858,7 +1694,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -1872,8 +1707,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -1897,7 +1730,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -1907,7 +1739,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -1921,8 +1752,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -1932,7 +1761,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -1948,60 +1776,43 @@ namespace SaporeGenesis
                 }
 
             }
-
 
             // TKNS - 21
-
             if (tkns21.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -2009,7 +1820,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -2023,8 +1833,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -2048,7 +1856,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -2058,7 +1865,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -2072,8 +1878,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -2083,7 +1887,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -2100,59 +1903,42 @@ namespace SaporeGenesis
 
             }
 
-
             // TKNS - 22
-
             if (tkns22.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -2160,7 +1946,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -2174,8 +1959,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -2199,7 +1982,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -2209,7 +1991,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -2223,8 +2004,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -2234,7 +2013,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -2252,57 +2030,41 @@ namespace SaporeGenesis
             }
 
             // TKNS - 23
-
             if (tkns23.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -2310,7 +2072,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -2324,8 +2085,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -2349,7 +2108,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -2359,7 +2117,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -2373,8 +2130,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -2384,7 +2139,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -2401,59 +2155,42 @@ namespace SaporeGenesis
 
             }
 
-
             // TKNS - 24
-
             if (tkns24.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -2461,7 +2198,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -2475,8 +2211,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -2500,7 +2234,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -2510,7 +2243,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -2524,8 +2256,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -2535,7 +2265,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -2554,57 +2283,41 @@ namespace SaporeGenesis
 
 
             // TKNS - 25
-
             if (tkns25.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -2612,7 +2325,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -2626,8 +2338,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -2651,7 +2361,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -2661,7 +2370,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -2675,8 +2383,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -2686,7 +2392,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -2703,58 +2408,43 @@ namespace SaporeGenesis
 
             }
 
-            // TKNS - 26
 
+            // TKNS - 26
             if (tkns26.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -2762,7 +2452,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -2776,8 +2465,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -2801,7 +2488,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -2811,7 +2497,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -2825,8 +2510,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -2836,7 +2519,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -2855,57 +2537,41 @@ namespace SaporeGenesis
 
 
             // TKNS - 01
-
             if (tkns01.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -2913,7 +2579,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -2927,8 +2592,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -2952,7 +2615,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -2962,7 +2624,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -2976,8 +2637,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -2987,7 +2646,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -3005,58 +2663,43 @@ namespace SaporeGenesis
             }
 
 
-            // TKNS - 02
 
+            // TKNS - 02
             if (tkns02.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -3064,7 +2707,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -3078,8 +2720,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -3103,7 +2743,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -3113,7 +2752,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -3127,8 +2765,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -3138,7 +2774,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -3156,57 +2791,41 @@ namespace SaporeGenesis
             }
 
             // TKNS - 03
-
-            if (tkns21.Checked == true)
+            if (tkns03.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -3214,7 +2833,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -3228,8 +2846,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -3253,7 +2869,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -3263,7 +2878,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -3277,8 +2891,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -3288,7 +2900,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -3304,60 +2915,43 @@ namespace SaporeGenesis
                 }
 
             }
-
 
             // TKNS - 04
-
             if (tkns04.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -3365,7 +2959,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -3379,8 +2972,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -3404,7 +2995,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -3414,7 +3004,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -3428,8 +3017,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -3439,7 +3026,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -3455,59 +3041,44 @@ namespace SaporeGenesis
                 }
 
             }
+
 
             // TKNS - 05
-
             if (tkns05.Checked == true)
             {
-                var dirDllOrigin = @"c:\temp\Genesis\DLL"; // Diretorio Origem da Dll
-                var dirBplOrigin = @"c:\temp\Genesis\BPL"; // Diretorio Origem da BPL
-                var dirQr2Origin = @"c:\temp\Genesis\QR2"; // Diretorio Origem da QR2
-                var dirZipOrigin = @"c:\temp\Genesis\ZIP"; // Diretorio Origem da ZIP 
-
-                var dirDllDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\DLL"; // Diretorio do Servidor ( DESTINO )
-                var dirBplDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\BPL"; // Diretorio do Servidor ( DESTINO )
-                var dirQr2Destin = @"C:\Users\Filipe Bernardino\Documents\Servidor\QR2"; // Diretorio do Servidor ( DESTINO )
-                var dirZipDestin = @"C:\Users\Filipe Bernardino\Documents\Servidor\ZIP"; // Diretorio do Servidor ( DESTINO )
-
-
-                var dirImport = @"C:\temp\Genesis\IMPORTADOS"; // Diretorio de Backup no Servidor ( DESTINO ) 
-
-
-                string[] filesDll = Directory.GetFiles(dirDllOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin); // Nome do  Diretorio e Nome do Arquivo ( array )
-                string[] filesZip = Directory.GetFiles(dirZipOrigin); // Nome do  Diretorio e Nome do Arquivo ( array )
-
-
-
-
-
-                string resultDll = String.Join(",", filesDll); // Encontra Nome do Arquivo
-                string resultBpl = String.Join(",", filesBpl); // Encontra Nome do Arquivo
-                string resultQr2 = String.Join(",", filesQr2); // Encontra Nome do Arquivo
-                string resultZip = String.Join(",", filesZip); // Encontra Nome do Arquivo
-
-
-                var arqDll = System.IO.Path.GetFileName(resultDll); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqBpl = System.IO.Path.GetFileName(resultBpl); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2); // Guarda o Nome do Arquivo em Uma Variavel
-                var arqZip = System.IO.Path.GetFileName(resultZip); // Guarda o Nome do Arquivo em Uma Variavel
-
-
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;  // Diretorio e nome do arquivo ( String )
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;  // Diretorio e nome do arquivo ( String )
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;  // Diretorio e nome do arquivo ( String )
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;  // Diretorio e nome do arquivo ( String )
-
-                resultTxt.Text = dirDllDestin;
-
-                resultTxt2.Text = arqDll;
-
-
+                //Origem
+                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
+                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
+                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
+                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
+                //Destino
+                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
+                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
+                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
+                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
+                //Backup
+                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
+                //Captura de Arquivos
+                string[] filesDll = Directory.GetFiles(dirDllOrigin);
+                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
+                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
+                string[] filesZip = Directory.GetFiles(dirZipOrigin);
+                //Captura Nome de Arquivos
+                string resultDll = String.Join(",", filesDll);
+                string resultBpl = String.Join(",", filesBpl);
+                string resultQr2 = String.Join(",", filesQr2);
+                string resultZip = String.Join(",", filesZip);
+                //Guarda Nome de Arquivos
+                var arqDll = System.IO.Path.GetFileName(resultDll);
+                var arqBpl = System.IO.Path.GetFileName(resultBpl);
+                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
+                var arqZip = System.IO.Path.GetFileName(resultZip);
+                // Concatena Diretorio + Nome de arquivos
+                var dirFileDll = dirDllOrigin + @"\" + arqDll;
+                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
+                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
+                var dirFileZip = dirZipOrigin + @"\" + arqZip;
                 //  DLL                       
-
-
                 if (System.IO.File.Exists(dirFileDll))
                 {
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
@@ -3515,7 +3086,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
                     System.IO.File.Delete(dirFileDll);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirDllOrigin))
@@ -3529,8 +3099,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirDllOrigin);
                     }
                 }
-
-
                 // BPL 
 
                 if (System.IO.File.Exists(dirFileBpl))
@@ -3554,7 +3122,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirBplOrigin);
                     }
                 }
-
                 // QR2
 
                 if (System.IO.File.Exists(dirFileQr2))
@@ -3564,7 +3131,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
                     System.IO.File.Delete(dirFileQr2);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirQr2Origin))
@@ -3578,8 +3144,6 @@ namespace SaporeGenesis
                         System.IO.File.Delete(dirQr2Origin);
                     }
                 }
-
-
                 // ZIP 
 
                 if (System.IO.File.Exists(dirFileZip))
@@ -3589,7 +3153,6 @@ namespace SaporeGenesis
                     File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
                     System.IO.File.Delete(dirFileZip);
                 }
-
                 else
                 {
                     if (!System.IO.File.Exists(dirZipOrigin))
@@ -3605,21 +3168,16 @@ namespace SaporeGenesis
                 }
 
             }
-
-
-
-
-
+            */
         }
-
     }
-
-
-
-
-
-
 }
+
+
+
+
+
+
 
 
 

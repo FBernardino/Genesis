@@ -68,8 +68,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.btnMarcar = new System.Windows.Forms.Button();
             this.btnEnviar = new System.Windows.Forms.Button();
-            this.resultTxt = new System.Windows.Forms.TextBox();
-            this.resultTxt2 = new System.Windows.Forms.TextBox();
             this.group1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -433,11 +431,12 @@
             // 
             this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
             this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(626, 433);
+            this.button3.Location = new System.Drawing.Point(604, 420);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 31);
+            this.button3.Size = new System.Drawing.Size(88, 31);
             this.button3.TabIndex = 11;
             this.button3.Text = "Sair";
+            this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -445,11 +444,12 @@
             // 
             this.btnArquivos.Image = ((System.Drawing.Image)(resources.GetObject("btnArquivos.Image")));
             this.btnArquivos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnArquivos.Location = new System.Drawing.Point(384, 433);
+            this.btnArquivos.Location = new System.Drawing.Point(416, 420);
             this.btnArquivos.Name = "btnArquivos";
             this.btnArquivos.Size = new System.Drawing.Size(88, 31);
             this.btnArquivos.TabIndex = 12;
             this.btnArquivos.Text = "Arquivos";
+            this.btnArquivos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnArquivos.UseVisualStyleBackColor = true;
             this.btnArquivos.Click += new System.EventHandler(this.btnEnviar_Click_1);
             // 
@@ -457,9 +457,9 @@
             // 
             this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
             this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(270, 433);
+            this.button2.Location = new System.Drawing.Point(322, 420);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(83, 31);
+            this.button2.Size = new System.Drawing.Size(88, 31);
             this.button2.TabIndex = 13;
             this.button2.Text = "Desmarcar";
             this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -470,11 +470,12 @@
             // 
             this.btnMarcar.Image = ((System.Drawing.Image)(resources.GetObject("btnMarcar.Image")));
             this.btnMarcar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMarcar.Location = new System.Drawing.Point(152, 433);
+            this.btnMarcar.Location = new System.Drawing.Point(228, 420);
             this.btnMarcar.Name = "btnMarcar";
-            this.btnMarcar.Size = new System.Drawing.Size(83, 31);
+            this.btnMarcar.Size = new System.Drawing.Size(88, 31);
             this.btnMarcar.TabIndex = 14;
             this.btnMarcar.Text = "Marcar";
+            this.btnMarcar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnMarcar.UseVisualStyleBackColor = true;
             this.btnMarcar.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -482,36 +483,20 @@
             // 
             this.btnEnviar.Image = ((System.Drawing.Image)(resources.GetObject("btnEnviar.Image")));
             this.btnEnviar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEnviar.Location = new System.Drawing.Point(510, 433);
+            this.btnEnviar.Location = new System.Drawing.Point(510, 420);
             this.btnEnviar.Name = "btnEnviar";
             this.btnEnviar.Size = new System.Drawing.Size(88, 31);
             this.btnEnviar.TabIndex = 15;
             this.btnEnviar.Text = "Enviar";
+            this.btnEnviar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnEnviar.UseVisualStyleBackColor = true;
             this.btnEnviar.Click += new System.EventHandler(this.btnEnviar_Click);
-            // 
-            // resultTxt
-            // 
-            this.resultTxt.Location = new System.Drawing.Point(36, 309);
-            this.resultTxt.Name = "resultTxt";
-            this.resultTxt.Size = new System.Drawing.Size(191, 20);
-            this.resultTxt.TabIndex = 16;
-          //  this.resultTxt.TextChanged += new System.EventHandler(this.resultTxt_TextChanged);
-            // 
-            // resultTxt2
-            // 
-            this.resultTxt2.Location = new System.Drawing.Point(36, 335);
-            this.resultTxt2.Name = "resultTxt2";
-            this.resultTxt2.Size = new System.Drawing.Size(191, 20);
-            this.resultTxt2.TabIndex = 17;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(899, 476);
-            this.Controls.Add(this.resultTxt2);
-            this.Controls.Add(this.resultTxt);
             this.Controls.Add(this.btnEnviar);
             this.Controls.Add(this.btnMarcar);
             this.Controls.Add(this.button2);
@@ -527,8 +512,9 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.group1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Gênesis";
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -550,7 +536,6 @@
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -595,8 +580,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnMarcar;
         private System.Windows.Forms.Button btnEnviar;
-        private System.Windows.Forms.TextBox resultTxt;
-        private System.Windows.Forms.TextBox resultTxt2;
     }
 }
 
