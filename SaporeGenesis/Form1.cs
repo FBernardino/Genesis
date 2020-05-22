@@ -9,380 +9,205 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-
+using System.DirectoryServices.ActiveDirectory;
 
 namespace SaporeGenesis
 {
     public partial class Form1 : Form
     {
+
+        Dictionary<string, CheckBox> dicServidores = new Dictionary<string, CheckBox>();
+        Bll.PublicaServidor publicaservidor = new Bll.PublicaServidor();
         public Form1()
         {
             InitializeComponent();
-        }
 
-        private void checkBox22_CheckedChanged(object sender, EventArgs e)
+            dicServidores.Add("tkns01", tkns01);
+            dicServidores.Add("tkns02", tkns02);
+            dicServidores.Add("tkns03", tkns03);
+            dicServidores.Add("tkns04", tkns04);
+            dicServidores.Add("tkns05", tkns05);
+            dicServidores.Add("tkns07", tkns07);
+            dicServidores.Add("tkns08", tkns08);
+            dicServidores.Add("tkns09", tkns09);
+            dicServidores.Add("tkns10", tkns10);
+            dicServidores.Add("tkns11", tkns11);
+            dicServidores.Add("tkns12", tkns12);
+            dicServidores.Add("tkns13", tkns13);
+            dicServidores.Add("tkns14", tkns14);
+            dicServidores.Add("tkns15", tkns15);
+            dicServidores.Add("tkns16", tkns16);
+            dicServidores.Add("tkns17", tkns17);
+            dicServidores.Add("tkns18", tkns18);
+            dicServidores.Add("tkns19", tkns19);
+            dicServidores.Add("tkns21", tkns21);
+            dicServidores.Add("tkns22", tkns22);
+            dicServidores.Add("tkns23", tkns23);
+            dicServidores.Add("tkns24", tkns24);
+            dicServidores.Add("tkns25", tkns25);
+            dicServidores.Add("tkns26", tkns26);
+
+        }
+        // BOTÃO MARCAR
+        private void btnMarcar_Click(object sender, EventArgs e)
         {
-
+            foreach (KeyValuePair<string, CheckBox> informacaoServidor in dicServidores)
+            {
+                var a = informacaoServidor.Value;
+                a.Checked = true;
+            }
         }
-
-        private void button1_Click(object sender, EventArgs e)
+        // BOTÃO DESMARCAR
+        private void btnDesmarcar_Click(object sender, EventArgs e)
         {
-
+            foreach (KeyValuePair<string, CheckBox> informacaoServidor in dicServidores)
+            {
+                if (informacaoServidor.Value.Checked)
+                {
+                    var a = informacaoServidor.Value;
+                    a.Checked = false;
+                }
+            }
         }
-
-        private void fileSystemWatcher1_Changed(object sender, System.IO.FileSystemEventArgs e)
+        // BOTÃO ARQUIVOS
+        private void btnArquivos_Click(object sender, EventArgs e)
         {
+            // Verifica Existencia Dos Diretorios De Origem e Os Cria Caso Não Exista 
+
+            if (!Directory.Exists(ConfigurationManager.AppSettings["userTemp"].ToString()))
+            {
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["userTemp"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["rootUser"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["userDll"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["userQr2"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["userBpl"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["userZip"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["userImport"].ToString());
+                System.Diagnostics.Process.Start(ConfigurationManager.AppSettings["rootUser"].ToString());
+
+            }
+            else if (!Directory.Exists(ConfigurationManager.AppSettings["rootUser"].ToString()))
+            {
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["rootUser"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["userDll"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["userQr2"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["userBpl"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["userZip"].ToString());
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["userImport"].ToString());
+                System.Diagnostics.Process.Start(ConfigurationManager.AppSettings["rootUser"].ToString());
+            }
+            else
+            {
+                System.Diagnostics.Process.Start(ConfigurationManager.AppSettings["rootUser"].ToString());
+            }
 
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        // BOTÃO FECHAR
+        private void btnSair_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-            tkns01.Checked = false;
-            tkns02.Checked = false;
-            tkns03.Checked = false;
-            tkns04.Checked = false;
-            tkns05.Checked = false;
-            tkns07.Checked = false;
-            tkns08.Checked = false;
-            tkns09.Checked = false;
-            tkns10.Checked = false;
-            tkns11.Checked = false;
-            tkns12.Checked = false;
-            tkns13.Checked = false;
-            tkns14.Checked = false;
-            tkns15.Checked = false;
-            tkns16.Checked = false;
-            tkns17.Checked = false;
-            tkns18.Checked = false;
-            tkns19.Checked = false;
-            tkns21.Checked = false;
-            tkns22.Checked = false;
-            tkns23.Checked = false;
-            tkns24.Checked = false;
-            tkns25.Checked = false;
-            tkns26.Checked = false;
-
-        }
-
-        private void group4_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            tkns01.Checked = true;
-            tkns02.Checked = true;
-            tkns03.Checked = true;
-            tkns04.Checked = true;
-            tkns05.Checked = true;
-            tkns07.Checked = true;
-            tkns08.Checked = true;
-            tkns09.Checked = true;
-            tkns10.Checked = true;
-            tkns11.Checked = true;
-            tkns12.Checked = true;
-            tkns13.Checked = true;
-            tkns14.Checked = true;
-            tkns15.Checked = true;
-            tkns16.Checked = true;
-            tkns17.Checked = true;
-            tkns18.Checked = true;
-            tkns19.Checked = true;
-            tkns21.Checked = true;
-            tkns22.Checked = true;
-            tkns23.Checked = true;
-            tkns24.Checked = true;
-            tkns25.Checked = true;
-            tkns26.Checked = true;
-        }
-
-        private void btnEnviar_Click_1(object sender, EventArgs e)
-        {
-            // Verifica Existencia Dos Diretorios De Origem e Os Cria Caso Não Exista 
-
-            if (!Directory.Exists(ConfigurationManager.AppSettings["root"].ToString()))
-            {
-                Directory.CreateDirectory(ConfigurationManager.AppSettings["root"].ToString());
-                Directory.CreateDirectory(ConfigurationManager.AppSettings["subdir"].ToString());
-                Directory.CreateDirectory(ConfigurationManager.AppSettings["dll"].ToString());
-                Directory.CreateDirectory(ConfigurationManager.AppSettings["qr2"].ToString());
-                Directory.CreateDirectory(ConfigurationManager.AppSettings["bpl"].ToString());
-                Directory.CreateDirectory(ConfigurationManager.AppSettings["zip"].ToString());
-                Directory.CreateDirectory(ConfigurationManager.AppSettings["dirImport"].ToString());
-                System.Diagnostics.Process.Start(ConfigurationManager.AppSettings["subdir"].ToString());
-            }
-            else
-            {
-                System.Diagnostics.Process.Start(ConfigurationManager.AppSettings["subdir"].ToString());
-            }
-        }
-
-        private void tkns07_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
+        // BOTÃO ENVIAR
         private void btnEnviar_Click(object sender, EventArgs e)
         {
-            // TKNS - 07
-            if (tkns07.Checked == true)
+            bool temCheckboxCheckado = false;
+            bool temArquivosParaEnviar = false;
+
+            foreach (KeyValuePair<string, CheckBox> informacaoServidor in dicServidores)
             {
-                //Origem
-                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
-                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
-                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
-                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
-                //Destino
-                var dirDllDestin = ConfigurationManager.AppSettings["dirDllDestin"].ToString();
-                var dirBplDestin = ConfigurationManager.AppSettings["dirBplDestin"].ToString();
-                var dirQr2Destin = ConfigurationManager.AppSettings["dirQr2Destin"].ToString();
-                var dirZipDestin = ConfigurationManager.AppSettings["dirZipDestin"].ToString();
-                //Backup
-                var dirImport = ConfigurationManager.AppSettings["dirImport"].ToString();
-                //Captura de Arquivos
-                string[] filesDll = Directory.GetFiles(dirDllOrigin);
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
-                string[] filesZip = Directory.GetFiles(dirZipOrigin);
-                //Captura Nome de Arquivos
-                string resultDll = String.Join(",", filesDll);
-                string resultBpl = String.Join(",", filesBpl);
-                string resultQr2 = String.Join(",", filesQr2);
-                string resultZip = String.Join(",", filesZip);
-                //Guarda Nome de Arquivos
-                var arqDll = System.IO.Path.GetFileName(resultDll);
-                var arqBpl = System.IO.Path.GetFileName(resultBpl);
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
-                var arqZip = System.IO.Path.GetFileName(resultZip);
-                // Concatena Diretorio + Nome de arquivos
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;
-                //  DLL                       
-                if (System.IO.File.Exists(dirFileDll))
-                {
-                    File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll + @".old"), true);
-                    File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll), true);
-                    File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
-                    System.IO.File.Delete(dirFileDll);
-                }
-                else
-                {
-                    if (!System.IO.File.Exists(dirDllOrigin))
-                    {
-                        MessageBox.Show("Não Existe Arquivo DLL na pasta de DLL´s", "Aviso");
-                    }
-                    else
-                    {
-                        File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin, arqDll), true);
-                        File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport, arqDll), true);
-                        System.IO.File.Delete(dirDllOrigin);
-                    }
-                }
-                // BPL 
 
-                if (System.IO.File.Exists(dirFileBpl))
+
+                if (informacaoServidor.Value.Checked)
                 {
-                    File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirBplDestin, arqBpl + @".old"), true);
-                    File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirBplDestin, arqBpl), true);
-                    File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirImport, arqBpl), true);
-                    System.IO.File.Delete(dirFileBpl);
+
+                    temCheckboxCheckado = true;
+
+                    //Date Time
+                    DateTime dataHoje = DateTime.Now;
+                    String dia = dataHoje.Day.ToString();
+                    String mes = dataHoje.Month.ToString();
+                    String ano = dataHoje.Year.ToString();
+                    String hora = dataHoje.Hour.ToString();
+                    String minuto = dataHoje.Minute.ToString();
+                    String diaHora = @"-" + dia + @"-" + mes + @"-" + ano + @"-" + hora + @"-" + minuto + @".old";
+
+
+
+
+                    //Origem
+                    var userTemp = ConfigurationManager.AppSettings["userTemp"].ToString();
+                    var rootUser = ConfigurationManager.AppSettings["rootUser"].ToString();
+                    var userDll = ConfigurationManager.AppSettings["userDll"].ToString(); // Diretório Origem
+                    var userQr2 = ConfigurationManager.AppSettings["userQr2"].ToString();
+                    var userBpl = ConfigurationManager.AppSettings["userBpl"].ToString();
+                    var userZip = ConfigurationManager.AppSettings["userZip"].ToString();
+                    var userImport = ConfigurationManager.AppSettings["userImport"].ToString();
+                    //Destino
+                    var serverDll = ConfigurationManager.AppSettings["serverDll" + informacaoServidor.Key].ToString();  // Diretorio Destino
+                    var serverBpl = ConfigurationManager.AppSettings["serverBpl" + informacaoServidor.Key].ToString();
+                    var serverQr2 = ConfigurationManager.AppSettings["serverQr2" + informacaoServidor.Key].ToString();
+                    var serverZip = ConfigurationManager.AppSettings["serverZip" + informacaoServidor.Key].ToString();
+                    var serverImport = ConfigurationManager.AppSettings["serverImport" + informacaoServidor.Key].ToString();
+
+                    //  CAPTURA DE ARQUIVOS
+                    //DLL
+                    string[] userDllNameStr = Directory.GetFiles(userDll); // String
+                    var userDllDiretorio = String.Join(",", userDllNameStr); // Diretorio de Origem + Nome do Arquivo
+                    var userDllName = System.IO.Path.GetFileName(userDllDiretorio); // Nome do Arquivo
+                    //BPL
+                    string[] userBplNameStr = Directory.GetFiles(userBpl); // String
+                    var userBplDiretorio = String.Join(",", userBplNameStr); // Diretorio de Origem + Nome do Arquivo
+                    var userBplName = System.IO.Path.GetFileName(userBplDiretorio); // Nome do Arquivo
+                    //QR2
+                    string[] userQr2NameStr = Directory.GetFiles(userQr2); // String
+                    var userQr2Diretorio = String.Join(",", userQr2NameStr); // Diretorio de Origem + Nome do Arquivo
+                    var userQr2Name = System.IO.Path.GetFileName(userQr2Diretorio); // Nome do Arquivo
+                    //ZIP
+                    string[] userZipNameStr = Directory.GetFiles(userZip); // String
+                    var userZipDiretorio = String.Join(",", userZipNameStr); // Diretorio de Origem + Nome do Arquivo
+                    var userZipName = System.IO.Path.GetFileName(userZipDiretorio); // Nome do Arquivo
+
+                    if (System.IO.File.Exists(userDll + @"\" + userDllName))
+                    {
+                        publicaservidor.EnviaArquivos(serverDll, userDllName, userDll, userImport, serverImport, userDllDiretorio, diaHora);
+                        temArquivosParaEnviar = true;
+                    }
+                    else if ((System.IO.File.Exists(userBpl + @"\" + userBplName)))
+                    {
+                        publicaservidor.EnviaArquivos(serverBpl, userBplName, userBpl, userImport, serverImport, userBplDiretorio, diaHora);
+                        temArquivosParaEnviar = true;
+                    }
+                    else if ((System.IO.File.Exists(userQr2 + @"\" + userQr2Name)))
+                    {
+                        publicaservidor.EnviaArquivos(serverQr2, userQr2Name, userQr2, userImport, serverImport, userQr2Diretorio, diaHora);
+                        temArquivosParaEnviar = true;
+                    }
+                    else if ((System.IO.File.Exists(userZip + @"\" + userZipName)))
+                    {
+                        publicaservidor.EnviaArquivos(serverZip, userZipName, userZip, userImport, serverImport, userZipDiretorio, diaHora);
+                        temArquivosParaEnviar = true;
+                    }
+
+
+
+
                 }
 
-                else
-                {
-                    if (!System.IO.File.Exists(dirBplOrigin))
-                    {
-                        MessageBox.Show("Não Existe Arquivo BPL na pasta de BPL´s", "Aviso");
-                    }
-                    else
-                    {
-                        File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirBplDestin, arqBpl), true);
-                        File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirImport, arqBpl), true);
-                        System.IO.File.Delete(dirBplOrigin);
-                    }
-                }
-                // QR2
-
-                if (System.IO.File.Exists(dirFileQr2))
-                {
-                    File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirQr2Destin, arqQr2 + @".old"), true);
-                    File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirQr2Destin, arqQr2), true);
-                    File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
-                    System.IO.File.Delete(dirFileQr2);
-                }
-                else
-                {
-                    if (!System.IO.File.Exists(dirQr2Origin))
-                    {
-                        MessageBox.Show("Não Existe Arquivo QR2 na pasta de QR2´s", "Aviso");
-                    }
-                    else
-                    {
-                        File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirQr2Destin, arqQr2), true);
-                        File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport, arqQr2), true);
-                        System.IO.File.Delete(dirQr2Origin);
-                    }
-                }
-                // ZIP 
-
-                if (System.IO.File.Exists(dirFileZip))
-                {
-                    File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirZipDestin, arqZip + @".old"), true);
-                    File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirZipDestin, arqZip), true);
-                    File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
-                    System.IO.File.Delete(dirFileZip);
-                }
-                else
-                {
-                    if (!System.IO.File.Exists(dirZipOrigin))
-                    {
-                        MessageBox.Show("Não Existe Arquivo ZIP na pasta de ZIP´s", "Aviso");
-                    }
-                    else
-                    {
-                        File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirZipDestin, arqZip), true);
-                        File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport, arqZip), true);
-                        System.IO.File.Delete(dirZipOrigin);
-                    }
-                }
 
             }
 
 
-            // TKNS - 08
-            if (tkns08.Checked == true)
+
+            if (!temCheckboxCheckado == true)
             {
-                //Origem
-                var dirDllOrigin = ConfigurationManager.AppSettings["dll"].ToString();
-                var dirBplOrigin = ConfigurationManager.AppSettings["bpl"].ToString();
-                var dirQr2Origin = ConfigurationManager.AppSettings["qr2"].ToString();
-                var dirZipOrigin = ConfigurationManager.AppSettings["zip"].ToString();
-                //Destino
-                var dirDllDestin08 = ConfigurationManager.AppSettings["dirDllDestin08"].ToString();
-                var dirBplDestin08 = ConfigurationManager.AppSettings["dirBplDestin08"].ToString();
-                var dirQr2Destin08 = ConfigurationManager.AppSettings["dirQr2Destin08"].ToString();
-                var dirZipDestin08 = ConfigurationManager.AppSettings["dirZipDestin08"].ToString();
-                //Backup
-                var dirImport08 = ConfigurationManager.AppSettings["dirImport08"].ToString();
-                //Captura de Arquivos
-                string[] filesDll = Directory.GetFiles(dirDllOrigin);
-                string[] filesBpl = Directory.GetFiles(dirBplOrigin);
-                string[] filesQr2 = Directory.GetFiles(dirQr2Origin);
-                string[] filesZip = Directory.GetFiles(dirZipOrigin);
-                //Captura Nome de Arquivos
-                string resultDll = String.Join(",", filesDll);
-                string resultBpl = String.Join(",", filesBpl);
-                string resultQr2 = String.Join(",", filesQr2);
-                string resultZip = String.Join(",", filesZip);
-                //Guarda Nome de Arquivos
-                var arqDll = System.IO.Path.GetFileName(resultDll);
-                var arqBpl = System.IO.Path.GetFileName(resultBpl);
-                var arqQr2 = System.IO.Path.GetFileName(resultQr2);
-                var arqZip = System.IO.Path.GetFileName(resultZip);
-                // Concatena Diretorio + Nome de arquivos
-                var dirFileDll = dirDllOrigin + @"\" + arqDll;
-                var dirFileBpl = dirBplOrigin + @"\" + arqBpl;
-                var dirFileQr2 = dirQr2Origin + @"\" + arqQr2;
-                var dirFileZip = dirZipOrigin + @"\" + arqZip;
-                //  DLL                       
-                if (System.IO.File.Exists(dirFileDll))
-                {
-                    File.Copy(Path.Combine(dirDllDestin08, arqDll), Path.Combine(dirDllDestin08, arqDll + @".old"), true);
-                    File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin08, arqDll), true);
-                    File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport08, arqDll), true);
-                    System.IO.File.Delete(dirFileDll);
-                }
-                else
-                {
-                    if (!System.IO.File.Exists(dirDllOrigin))
-                    {
-                        MessageBox.Show("Não Existe Arquivo DLL na pasta de DLL´s", "Aviso");
-                    }
-                    else
-                    {
-                        File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirDllDestin08, arqDll), true);
-                        File.Copy(Path.Combine(dirDllOrigin, arqDll), Path.Combine(dirImport08, arqDll), true);
-                        System.IO.File.Delete(dirDllOrigin);
-                    }
-                }
-                // BPL 
+                MessageBox.Show("Nenhum Servidor Foi Selecionado ! Parece Usuário");
+            }
 
-                if (System.IO.File.Exists(dirFileBpl))
-                {
-                    File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirBplDestin08, arqBpl + @".old"), true);
-                    File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirBplDestin08, arqBpl), true);
-                    File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirImport08, arqBpl), true);
-                    System.IO.File.Delete(dirFileBpl);
-                }
-
-                else
-                {
-                    if (!System.IO.File.Exists(dirBplOrigin))
-                    {
-                        MessageBox.Show("Não Existe Arquivo BPL na pasta de BPL´s", "Aviso");
-                    }
-                    else
-                    {
-                        File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirBplDestin08, arqBpl), true);
-                        File.Copy(Path.Combine(dirBplOrigin, arqBpl), Path.Combine(dirImport08, arqBpl), true);
-                        System.IO.File.Delete(dirBplOrigin);
-                    }
-                }
-                // QR2
-
-                if (System.IO.File.Exists(dirFileQr2))
-                {
-                    File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirQr2Destin08, arqQr2 + @".old"), true);
-                    File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirQr2Destin08, arqQr2), true);
-                    File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport08, arqQr2), true);
-                    System.IO.File.Delete(dirFileQr2);
-                }
-                else
-                {
-                    if (!System.IO.File.Exists(dirQr2Origin))
-                    {
-                        MessageBox.Show("Não Existe Arquivo QR2 na pasta de QR2´s", "Aviso");
-                    }
-                    else
-                    {
-                        File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirQr2Destin08, arqQr2), true);
-                        File.Copy(Path.Combine(dirQr2Origin, arqQr2), Path.Combine(dirImport08, arqQr2), true);
-                        System.IO.File.Delete(dirQr2Origin);
-                    }
-                }
-                // ZIP 
-
-                if (System.IO.File.Exists(dirFileZip))
-                {
-                    File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirZipDestin08, arqZip + @".old"), true);
-                    File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirZipDestin08, arqZip), true);
-                    File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport08, arqZip), true);
-                    System.IO.File.Delete(dirFileZip);
-                }
-                else
-                {
-                    if (!System.IO.File.Exists(dirZipOrigin))
-                    {
-                        MessageBox.Show("Não Existe Arquivo ZIP na pasta de ZIP´s", "Aviso");
-                    }
-                    else
-                    {
-                        File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirZipDestin08, arqZip), true);
-                        File.Copy(Path.Combine(dirZipOrigin, arqZip), Path.Combine(dirImport08, arqZip), true);
-                        System.IO.File.Delete(dirZipOrigin);
-                    }
-                }
-
+            if (temArquivosParaEnviar == false)
+            {
+                MessageBox.Show("Não Há Arquivos Nas Pastas De Origem ! Parece Usuário");
             }
 
 
@@ -390,9 +215,15 @@ namespace SaporeGenesis
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            {
+                MessageBox.Show("FIM");
+            }
         }
+
+     
     }
+
+   
 }
 
 

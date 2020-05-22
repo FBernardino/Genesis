@@ -63,9 +63,9 @@
             this.tkns04 = new System.Windows.Forms.CheckBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.tkns05 = new System.Windows.Forms.CheckBox();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnSair = new System.Windows.Forms.Button();
             this.btnArquivos = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnDesmarcar = new System.Windows.Forms.Button();
             this.btnMarcar = new System.Windows.Forms.Button();
             this.btnEnviar = new System.Windows.Forms.Button();
             this.group1.SuspendLayout();
@@ -131,7 +131,6 @@
             this.tkns07.TabIndex = 0;
             this.tkns07.Text = "TKNS07";
             this.tkns07.UseVisualStyleBackColor = true;
-            this.tkns07.CheckedChanged += new System.EventHandler(this.tkns07_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -376,7 +375,6 @@
             this.group4.Size = new System.Drawing.Size(168, 105);
             this.group4.TabIndex = 6;
             this.group4.TabStop = false;
-            this.group4.Enter += new System.EventHandler(this.group4_Enter);
             // 
             // tkns03
             // 
@@ -387,7 +385,6 @@
             this.tkns03.TabIndex = 2;
             this.tkns03.Text = "TKNS03";
             this.tkns03.UseVisualStyleBackColor = true;
-            this.tkns03.CheckedChanged += new System.EventHandler(this.checkBox22_CheckedChanged);
             // 
             // group9
             // 
@@ -427,63 +424,63 @@
             this.tkns05.Text = "TKNS05";
             this.tkns05.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btnSair
             // 
-            this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(604, 420);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(88, 31);
-            this.button3.TabIndex = 11;
-            this.button3.Text = "Sair";
-            this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btnSair.Image = ((System.Drawing.Image)(resources.GetObject("btnSair.Image")));
+            this.btnSair.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSair.Location = new System.Drawing.Point(593, 295);
+            this.btnSair.Name = "btnSair";
+            this.btnSair.Size = new System.Drawing.Size(88, 31);
+            this.btnSair.TabIndex = 11;
+            this.btnSair.Text = "Sair";
+            this.btnSair.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSair.UseVisualStyleBackColor = true;
+            this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
             // 
             // btnArquivos
             // 
             this.btnArquivos.Image = ((System.Drawing.Image)(resources.GetObject("btnArquivos.Image")));
             this.btnArquivos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnArquivos.Location = new System.Drawing.Point(416, 420);
+            this.btnArquivos.Location = new System.Drawing.Point(405, 295);
             this.btnArquivos.Name = "btnArquivos";
             this.btnArquivos.Size = new System.Drawing.Size(88, 31);
             this.btnArquivos.TabIndex = 12;
             this.btnArquivos.Text = "Arquivos";
             this.btnArquivos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnArquivos.UseVisualStyleBackColor = true;
-            this.btnArquivos.Click += new System.EventHandler(this.btnEnviar_Click_1);
+            this.btnArquivos.Click += new System.EventHandler(this.btnArquivos_Click);
             // 
-            // button2
+            // btnDesmarcar
             // 
-            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(322, 420);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(88, 31);
-            this.button2.TabIndex = 13;
-            this.button2.Text = "Desmarcar";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnDesmarcar.Image = ((System.Drawing.Image)(resources.GetObject("btnDesmarcar.Image")));
+            this.btnDesmarcar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDesmarcar.Location = new System.Drawing.Point(311, 295);
+            this.btnDesmarcar.Name = "btnDesmarcar";
+            this.btnDesmarcar.Size = new System.Drawing.Size(88, 31);
+            this.btnDesmarcar.TabIndex = 13;
+            this.btnDesmarcar.Text = "Desmarcar";
+            this.btnDesmarcar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnDesmarcar.UseVisualStyleBackColor = true;
+            this.btnDesmarcar.Click += new System.EventHandler(this.btnDesmarcar_Click);
             // 
             // btnMarcar
             // 
             this.btnMarcar.Image = ((System.Drawing.Image)(resources.GetObject("btnMarcar.Image")));
             this.btnMarcar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMarcar.Location = new System.Drawing.Point(228, 420);
+            this.btnMarcar.Location = new System.Drawing.Point(217, 295);
             this.btnMarcar.Name = "btnMarcar";
             this.btnMarcar.Size = new System.Drawing.Size(88, 31);
             this.btnMarcar.TabIndex = 14;
             this.btnMarcar.Text = "Marcar";
             this.btnMarcar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnMarcar.UseVisualStyleBackColor = true;
-            this.btnMarcar.Click += new System.EventHandler(this.button4_Click);
+            this.btnMarcar.Click += new System.EventHandler(this.btnMarcar_Click);
             // 
             // btnEnviar
             // 
             this.btnEnviar.Image = ((System.Drawing.Image)(resources.GetObject("btnEnviar.Image")));
             this.btnEnviar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEnviar.Location = new System.Drawing.Point(510, 420);
+            this.btnEnviar.Location = new System.Drawing.Point(499, 295);
             this.btnEnviar.Name = "btnEnviar";
             this.btnEnviar.Size = new System.Drawing.Size(88, 31);
             this.btnEnviar.TabIndex = 15;
@@ -496,12 +493,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(899, 476);
+            this.ClientSize = new System.Drawing.Size(884, 341);
             this.Controls.Add(this.btnEnviar);
             this.Controls.Add(this.btnMarcar);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnDesmarcar);
             this.Controls.Add(this.btnArquivos);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.btnSair);
             this.Controls.Add(this.groupBox10);
             this.Controls.Add(this.group9);
             this.Controls.Add(this.group4);
@@ -513,9 +510,10 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.group1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gênesis";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -576,9 +574,9 @@
         private System.Windows.Forms.CheckBox tkns04;
         private System.Windows.Forms.GroupBox groupBox10;
         private System.Windows.Forms.CheckBox tkns05;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnSair;
         private System.Windows.Forms.Button btnArquivos;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnDesmarcar;
         private System.Windows.Forms.Button btnMarcar;
         private System.Windows.Forms.Button btnEnviar;
     }
