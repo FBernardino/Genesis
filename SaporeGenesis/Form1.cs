@@ -18,6 +18,8 @@ namespace SaporeGenesis
 
         Dictionary<string, CheckBox> dicServidores = new Dictionary<string, CheckBox>();
         Bll.PublicaServidor publicaservidor = new Bll.PublicaServidor();
+        Bll.ApagarArquivos apagarArquivos = new Bll.ApagarArquivos();
+
         public Form1()
         {
             InitializeComponent();
@@ -196,34 +198,103 @@ namespace SaporeGenesis
                 }
 
 
+
             }
+
+
+            foreach (KeyValuePair<string, CheckBox> informacaoServidor in dicServidores)
+            {
+                bool temCheckboxCheckado2 = false;
+
+                if (informacaoServidor.Value.Checked)
+                {
+
+                    temCheckboxCheckado2 = true;
+
+                    //Origem
+                    var userTemp = ConfigurationManager.AppSettings["userTemp"].ToString();
+                    var rootUser = ConfigurationManager.AppSettings["rootUser"].ToString();
+                    var userDll = ConfigurationManager.AppSettings["userDll"].ToString(); // Diretório Origem
+                    var userQr2 = ConfigurationManager.AppSettings["userQr2"].ToString();
+                    var userBpl = ConfigurationManager.AppSettings["userBpl"].ToString();
+                    var userZip = ConfigurationManager.AppSettings["userZip"].ToString();
+                    var userImport = ConfigurationManager.AppSettings["userImport"].ToString();
+
+                    //  CAPTURA DE ARQUIVOS
+                    //DLL
+                    string[] userDllNameStr = Directory.GetFiles(userDll); // String
+                    var userDllDiretorio = String.Join(",", userDllNameStr); // Diretorio de Origem + Nome do Arquivo
+                    var userDllName = System.IO.Path.GetFileName(userDllDiretorio); // Nome do Arquivo
+                                                                                    //BPL
+                    string[] userBplNameStr = Directory.GetFiles(userBpl); // String
+                    var userBplDiretorio = String.Join(",", userBplNameStr); // Diretorio de Origem + Nome do Arquivo
+                    var userBplName = System.IO.Path.GetFileName(userBplDiretorio); // Nome do Arquivo
+                                                                                    //QR2
+                    string[] userQr2NameStr = Directory.GetFiles(userQr2); // String
+                    var userQr2Diretorio = String.Join(",", userQr2NameStr); // Diretorio de Origem + Nome do Arquivo
+                    var userQr2Name = System.IO.Path.GetFileName(userQr2Diretorio); // Nome do Arquivo
+                                                                                    //ZIP
+                    string[] userZipNameStr = Directory.GetFiles(userZip); // String
+                    var userZipDiretorio = String.Join(",", userZipNameStr); // Diretorio de Origem + Nome do Arquivo
+                    var userZipName = System.IO.Path.GetFileName(userZipDiretorio); // Nome do Arquivo
+
+
+                    if (System.IO.File.Exists(userDll + @"\" + userDllName))
+                    {
+                        apagarArquivos.ApagarArquivosImportados(userDllName, userDll);
+                    }
+
+                    if (System.IO.File.Exists(userBpl + @"\" + userBplName))
+                    {
+                        apagarArquivos.ApagarArquivosImportados(userBplName, userBpl);
+                    }
+
+                    if (System.IO.File.Exists(userQr2 + @"\" + userQr2Name))
+                    {
+                        apagarArquivos.ApagarArquivosImportados(userQr2Name, userQr2);
+                    }
+
+                    if (System.IO.File.Exists(userZip + @"\" + userZipName))
+                    {
+                        apagarArquivos.ApagarArquivosImportados(userZipName, userZip);
+                    }
+
+                }
+            }
+
+
 
 
 
             if (!temCheckboxCheckado == true)
             {
-                MessageBox.Show("Nenhum Servidor Foi Selecionado ! Parece Usuário");
+                MessageBox.Show("Nenhum Servidor Foi Selecionado ! ");
             }
 
             if (temArquivosParaEnviar == false)
             {
-                MessageBox.Show("Não Há Arquivos Nas Pastas De Origem ! Parece Usuário");
+                MessageBox.Show("Não Há Arquivos Nas Pastas De Origem ! ");
             }
 
+
+
+
+            MessageBox.Show("FIM");
 
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            {
-                MessageBox.Show("FIM");
-            }
+
         }
 
-     
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 
-   
+
 }
 
 

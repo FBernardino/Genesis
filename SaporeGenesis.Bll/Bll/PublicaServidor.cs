@@ -43,25 +43,27 @@ namespace SaporeGenesis.Bll
                         File.Copy(Path.Combine(user, arquivoDaVez), Path.Combine(serverImport, arquivoDaVez), true);
                     }
 
-                    System.IO.File.Delete(user + @"\" + arquivoDaVez);
+             
                 }
                 else
                 {
                     File.Copy(Path.Combine(user, arquivoDaVez), Path.Combine(server, arquivoDaVez), true);
                     File.Copy(Path.Combine(user, arquivoDaVez), Path.Combine(userImport, arquivoDaVez), true);
                     File.Copy(Path.Combine(user, arquivoDaVez), Path.Combine(serverImport, arquivoDaVez), true);
-                    System.IO.File.Delete(user + @"\" + arquivoDaVez);
+               
                 }
 
 
             }
 
-
-
-
+          
 
 
         }
 
+
+
     }
+
+
 }
